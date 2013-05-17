@@ -2,19 +2,18 @@ mod.controller( 'IndexCtrl', [ '$scope', '$resource', function( $scope, $resourc
 
     console.log( "Created indexctrl" );
     
-    var CamliResource = $resource( Camli.config.searchRoot + "camli/search/recent", {}, {
+    var CamliResource = $resource( "/my-search/camli/search/recent", {}, {
         recent: { isArray: false, method: 'GET' }
     } );
-    
-    $scope.thumbSizes = CamliIndexPage.thumbSizes;
-    $scope.thumbSizeIdx = CamliIndexPage.thumbSizeIdx;
     
     $scope.adjustThumbSize = function( idxDelta ) {
         var newSize = $scope.thumbSizeIdx + idxDelta;
         if (newSize < 0 || newSize >= $scope.thumbSizes.length) {
+            console.log( "Skipping adjustment, outside of bounds" );
             return;
         }
         $scope.thumbSizeIdx = newSize;   
+        console.log( "Size is: " + newSize );
     }
 
     $scope.smaller = function() {
@@ -44,11 +43,22 @@ mod.controller( 'IndexCtrl', [ '$scope', '$resource', function( $scope, $resourc
         return imgRef + "/" + imgName + "?mw=" + $scope.thumbSize() + "&mh=" + $scope.thumbSize();
     }
 
+    $scope.setupThumbnailSizes = function() {
+        $scope.thumbSizes = CamliIndexPage.thumbSizes;
+        $scope.thumbSizeIdx = CamliIndexPage.thumbSizeIdx;
+        }
+
     $scope.init = function() {
+        $scope.setupThumbnailSizes();
+        $scope.load();
+    }
+
+    $scope.load = function() {
         console.log( "Loading items" );
         CamliResource.recent( {}, function( response ) {
             $scope.items = response.recent;
             $scope.meta = response.meta;
         });
+
     }
 } ] );
