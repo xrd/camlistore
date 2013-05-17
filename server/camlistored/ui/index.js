@@ -354,4 +354,4 @@ CamliIndexPage.onLoadedRecentItems = function (searchRes) {
     }
 };
 
-window.addEventListener("load", CamliIndexPage.onLoad);
+// window.addEventListener("load", CamliIndexPage.onLoad);

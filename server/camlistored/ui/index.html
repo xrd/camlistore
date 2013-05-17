@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Recent Permanodes</title>
@@ -6,39 +7,77 @@
   <script type="text/javascript" src="SHA1.js"></script>
   <script src="camli.js"></script>
   <script src="index.js"></script>
+
   <script src="?camli.mode=config&cb=Camli.onConfiguration"></script>
+
+  <!-- Angular Replacements -->
+  <script src="http://code.angularjs.org/1.1.4/angular.js"></script>
+  <script src="http://code.angularjs.org/1.1.4/angular-resource.js"></script>
+  <script src="ng.js"></script>
+  <script src="ng_index.js"></script>
+
   <link rel="stylesheet" href="camli.css">
   <link rel="stylesheet" href="index.css">
+
+  <link rel="stylesheet" href="bootstrap.css">
 </head>
-<body class="camli-ui-index">
-  <h1 id="topTitle">Recent Permanodes</h1>
-  <div id='toolbar'>
-    <input type='button' id='btnList' value="list"><input type='button' id='btnThumbs' value="thm">
+<body class="camli-ui-index" ng-app="camli">
+  <div class="container">
+    <div class='navbar'>
+      <div class='navbar-inner'>
+        <div class='container-narrow'>
+          <h1 id="topTitle">Recent Permanodes</h1>
+        </div>
+      </div>
+    </div>
+    <div id='toolbar'>
 
-    <input type='button' id='btnSmaller' value="-"><input type='button' id='btnBigger' value="+">
-
-    <form style="display: inline" id="formView">
-      View:
-      <select id="selectView">
-        <option value="recent">Recent</a>
-        <option value="date">From &lt;date&gt;...</a>
-        <option id="optFromSel" value="fromsel" disabled='true'>From selected item</a>
-        <optiongroup title="Debug">
-          <option value="search">Old Search</a>
-          <option value="debug:disco">Debug: Discovery</a>
-          <option value="debug:signing">Debug: Signing</a>
-          <option value="debug:misc">Debug: Misc</a>
-        </optiongroup>
-      </select>
-    </form>
-
-    <form style="float: right" id="formSearch">
-      <input type="text" id="textSearch" size=15 title="Search"><input type="submit" id="btnSearch" value="Srch">
-    </form>
+      <div ng-controller="IndexCtrl" ng-init="init()">
+        
+        Current thumbnail size: {{thumbSizes[thumbSizeIdx]}}
+        
+        <input type='button' id='btnList' value="list">
+        <input type='button' id='btnThumbs' value="thm">
+        
+        <input type='button' id='btnSmaller' value="-" ng-click="smaller()">
+        <input type='button' id='btnBigger' value="+" ng-click="larger()">
+        
+        <form style="display: inline" id="formView">
+          View:
+          <select id="selectView">
+            <option value="recent">Recent</option>
+            <option value="date">From &lt;date&gt;...</option>
+            <option id="optFromSel" value="fromsel" disabled='true'>From selected item</option>
+            <optiongroup title="Debug">
+              <option value="search">Old Search</option>
+              <option value="debug:disco">Debug: Discovery</option>
+              <option value="debug:signing">Debug: Signing</option>
+              <option value="debug:misc">Debug: Misc</option>
+            </optiongroup>
+          </select>
+        </form>
+        
+        <form style="float: right" id="formSearch">
+          <input type="text" id="textSearch" size=15 title="Search"><input type="submit" id="btnSearch" value="Srch">
+        </form>
+      
+      
+        {{ thumbSize() }}
+        {{ thumbnailSpan() }}
+        
+        <ul class="thumbnails">
+          <li ng-class="thumbnailSpan()">
+            <div ng-repeat="item in items">
+              <a href="#" class="thumbnail">
+                <img ng-src="thumbnail/{{thumbnailSrc(item)}}" ng-style="{ height: item.thumbnailHeight, width: item.thumbnailWidth }"/>
+                <div class="description">{{resolvedItem(item).file.fileName}}</div>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    <div style="display: block; clear: both" id="debugstatus"></div>
   </div>
-  <ul id="recent"></ul>
-
-  <div style="display: block; clear: both" id="debugstatus"></div>
-
+  
 </body>
 </html>
