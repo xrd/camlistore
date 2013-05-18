@@ -17,8 +17,24 @@ describe("IndexCtrl", function() {
       return httpBackend.verifyNoOutstandingRequest();
     });
 
+    describe( "#thumnailSpan", function() { 
+        it( "should have span1 to start", function() {
+            scope.setupThumbnailSizes();
+            expect( scope.thumbnailSpan() ).toEqual( "span1" );
+        });
+
+        it( "should have span2 after bumping size", function() {
+            scope.setupThumbnailSizes();
+            expect( scope.thumbnailSpan() ).toEqual( "span1" );
+            scope.larger()
+            scope.larger()
+            scope.larger()
+            expect( scope.thumbnailSpan() ).toEqual( "span2" );
+        });
+    });
+
     describe( "#thumbSize", function() {
-        return it( "should have the proper sized thumbnail to start (100)", function() {
+        it( "should have the proper sized thumbnail to start (100)", function() {
             scope.setupThumbnailSizes();
             expect( scope.thumbSize() ).toEqual( 100 );
         })

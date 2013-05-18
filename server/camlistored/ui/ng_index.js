@@ -1,7 +1,5 @@
 mod.controller( 'IndexCtrl', [ '$scope', '$resource', function( $scope, $resource ) {
 
-    console.log( "Created indexctrl" );
-    
     var CamliResource = $resource( "/my-search/camli/search/recent", {}, {
         recent: { isArray: false, method: 'GET' }
     } );
@@ -9,11 +7,9 @@ mod.controller( 'IndexCtrl', [ '$scope', '$resource', function( $scope, $resourc
     $scope.adjustThumbSize = function( idxDelta ) {
         var newSize = $scope.thumbSizeIdx + idxDelta;
         if (newSize < 0 || newSize >= $scope.thumbSizes.length) {
-            console.log( "Skipping adjustment, outside of bounds" );
             return;
         }
         $scope.thumbSizeIdx = newSize;   
-        console.log( "Size is: " + newSize );
     }
 
     $scope.smaller = function() {
@@ -54,10 +50,10 @@ mod.controller( 'IndexCtrl', [ '$scope', '$resource', function( $scope, $resourc
     }
 
     $scope.load = function() {
-        console.log( "Loading items" );
         CamliResource.recent( {}, function( response ) {
             $scope.items = response.recent;
             $scope.meta = response.meta;
+            createPlusButton();
         });
 
     }

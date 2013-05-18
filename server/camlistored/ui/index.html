@@ -66,8 +66,8 @@
         {{ thumbnailSpan() }}
         
         <ul class="thumbnails">
-          <li ng-class="thumbnailSpan()">
-            <div ng-repeat="item in items">
+          <li ng-repeat="item in items" ng-class="thumbnailSpan()">
+            <div>
               <a ng-href="?p={{item.blobref}}" class="thumbnail">
                 <img ng-src="thumbnail/{{thumbnailSrc(item)}}" ng-style="{ height: item.thumbnailHeight, width: item.thumbnailWidth }"/>
                 <div class="description">{{resolvedItem(item).file.fileName}}</div>
